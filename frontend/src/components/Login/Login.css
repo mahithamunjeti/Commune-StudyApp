@@ -1,0 +1,108 @@
+/* Login Page Matching Home Page Theme */
+
+/* Full Page Styling */
+.login-container {
+  height: 92.8vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FDFAF6; /* Matches Home Page */
+  padding: 20px;
+}
+
+/* Login Box */
+.login-box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Title & Subtitle */
+.login-title {
+  font-size: 26px;
+  font-weight: bold;
+  color: #5A5A5A;
+  margin-bottom: 5px;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+/* Error Message */
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Form */
+.login-form {
+  width: 100%;
+  align-items: center;
+  text-align: left;
+}
+
+/* Input Fields */
+.login-input {
+  width: 90%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #F3F3F3;
+  transition: border-color 0.3s;
+  text-align: center;
+}
+
+.login-input:focus {
+  border-color: #99BC85;
+  outline: none;
+}
+
+/* Login Button - Matching Home Page */
+.login-button {
+  margin-top: 10px;
+  width: 50%;
+  margin-left: 25%;
+  padding: 12px;
+  background: #FDFAF6; /* Matches home page */
+  color: #030303;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid #99BC85;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-button:hover {
+  background: #99BC85;
+  color: white;
+  transform: scale(1.05);
+}
+
+/* Register Link */
+.login-footer {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+.login-link {
+  color: #5A5A5A;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}

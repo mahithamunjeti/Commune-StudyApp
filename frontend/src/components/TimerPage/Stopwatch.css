@@ -1,0 +1,157 @@
+/* General Styles */
+.stopwatch-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #FAF1E6; /* Soft neutral background */
+    color: #030303;
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+}
+  
+/* Title */
+h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #030303; /* Dark text for contrast */
+}
+  
+/* Stopwatch Clock */
+.clock {
+    width: 180px;
+    height: 180px;
+    background: #E4EFE7; /* Light greenish-gray */
+    border: 6px solid #99BC85; /* Soft green */
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 15px rgba(153, 188, 133, 0.3);
+}
+  
+.clock-face {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+  
+/* Stopwatch Hand */
+.hand {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom center;
+    transition: transform 0.5s ease-in-out;
+    border-radius: 5px;
+}
+  
+.second-hand {
+    width: 2px;
+    height: 80px;
+    background: #F47C7C; /* Soft red for contrast */
+    transform: translate(-50%, 0%) rotate(0deg);
+}
+  
+/* Timer Display */
+.timer-display {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #99BC85; /* Soft green */
+    margin-bottom: 20px;
+}
+  
+/* Buttons */
+.buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+  
+button {
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+    color: #030303;
+}
+  
+.start-button {
+    background: #E4EFE7;
+}
+  
+.start-button:hover {
+    background: #99BC85;
+    transform: scale(1.05);
+}
+  
+.lap-button {
+    background: #FDFAF6;
+}
+  
+.lap-button:hover {
+    background: #E4EFE7;
+    transform: scale(1.05);
+}
+  
+.reset-button {
+    background: #FDFAF6;
+}
+  
+.reset-button:hover {
+    background: #E4EFE7;
+    transform: scale(1.05);
+}
+  
+.back-button {
+    background: #F47C7C;
+    color: white;
+}
+  
+.back-button:hover {
+    background: #E47C7C;
+    transform: scale(1.05);
+}
+  
+/* Laps Section */
+.laps-container {
+    margin-top: 20px;
+    padding: 10px;
+    background: #FDFAF6;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(153, 188, 133, 0.2);
+    max-width: 300px;
+    width: 100%;
+}
+  
+.laps-container h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+  
+.laps-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+  
+.laps-container li {
+    font-size: 16px;
+    padding: 5px 0;
+    border-bottom: 1px solid #E4EFE7;
+}
+  
+.laps-container li:last-child {
+    border-bottom: none;
+}

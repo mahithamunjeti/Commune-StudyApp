@@ -1,0 +1,96 @@
+/* Home.css */
+.home-container {
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  background: #FAF1E6; /* Soft neutral background */
+  background-size: cover;
+}
+
+/* Header: Logo + Title */
+.home-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.home-logo {
+  height: 60px;
+  width: 60px;
+  margin-right: 15px;
+}
+
+.home-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #030303; /* Dark text for contrast */
+}
+
+/* Centered Content */
+.home-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-heading {
+  font-size: 42px;
+  font-weight: 800;
+  color: #030303; /* Darker text */
+  margin-bottom: 10px;
+}
+
+.highlight {
+  color: #99BC85; /* Soft green accent */
+}
+
+/* Description Text */
+.home-text {
+  font-size: 18px;
+  color: #030303; /* Dark text */
+  max-width: 500px;
+  margin-bottom: 30px;
+}
+
+/* Buttons */
+.button-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center; /* Ensures buttons are centered */
+  margin-left: -10px; /* Moves buttons slightly left */
+}
+
+.home-button {
+  padding: 15px 40px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+  text-decoration: none;
+  color: #030303; /* Keeping dark text */
+}
+
+.login-button {
+  background: #E4EFE7;
+}
+
+.login-button:hover {
+  background: #99BC85;
+  transform: scale(1.05);
+}
+
+.register-button {
+  background: #FDFAF6; 
+}
+
+.register-button:hover {
+  background: #E4EFE7;
+  transform: scale(1.05);
+}

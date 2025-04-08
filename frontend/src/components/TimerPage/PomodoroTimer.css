@@ -1,0 +1,126 @@
+/* General Styles */
+.pomodoro-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;  /* Adjusted from min-height to height */
+    background: #FAF1E6;
+    color: #030303;
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+    overflow: hidden;  /* Prevents scrolling */
+}
+  
+/* Title */
+h1 {
+    font-size: 32px;
+    margin-bottom: 10px; /* Reduced margin */
+    font-weight: bold;
+    color: #030303;
+}
+  
+/* Pomodoro Clock */
+.clock {
+    width: 160px; /* Slightly smaller */
+    height: 160px;
+    margin-bottom: 15px; /* Reduce bottom margin */
+}
+  
+.clock-face {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+  
+/* Stopwatch Hand */
+.hand {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom center;
+    transition: transform 0.5s ease-in-out;
+    border-radius: 5px;
+}
+  
+.second-hand {
+    width: 2px;
+    height: 80px;
+    background: #F47C7C;
+    transform: translate(-50%, 0%) rotate(0deg);
+}
+  
+/* Timer Display */
+.timer-display {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #99BC85;
+    margin-bottom: 10px;
+}
+  
+/* Work/Break Status */
+.session-status {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #F4C542;
+}
+  
+/* Buttons */
+.buttons {
+    gap: 15px; /* Reduce space between buttons */
+    margin-bottom: 10px; /* Reduce bottom margin */
+}
+  
+button {
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+    color: #030303;
+}
+  
+.start-button {
+    background: #E4EFE7;
+}
+  
+.start-button:hover {
+    background: #99BC85;
+    transform: scale(1.05);
+}
+  
+.reset-button {
+    background: #FDFAF6;
+}
+  
+.reset-button:hover {
+    background: #E4EFE7;
+    transform: scale(1.05);
+}
+  
+.back-button {
+    background: #F47C7C;
+    color: white;
+}
+  
+.back-button:hover {
+    background: #E47C7C;
+    transform: scale(1.05);
+}
+  
+/* Session Counter */
+.sessions-container {
+    padding: 8px; /* Slightly reduced */
+    max-width: 250px; /* Reduce width */
+}
+  
+.sessions-container h3 {
+    font-size: 18px;
+    font-weight: bold;
+}

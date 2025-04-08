@@ -1,0 +1,137 @@
+/* Dashboard Container */
+.dashboard-container {
+  box-sizing: border-box;
+  margin: auto ;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #FDFAF6; /* Matches Login & Register Page */
+   /* Adjusted padding to accommodate header */
+  width: 90vw;
+  overflow: hidden; /* To prevent scrolling issues */
+}
+
+/* Dashboard Header */
+.dashboard-header {
+  width: 95%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #FAF1E6; /* Clean white background */
+  padding: 15px 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds subtle shadow */
+}
+
+/* Logo and App Title */
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.app-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #5A5A5A;
+  margin: 0;
+}
+
+/* Logout Button */
+.logout-button {
+  background-color: #FAF1E6; 
+  color: #907978;
+  font-weight: bold;
+  text-decoration: underline;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+.logout-button:hover {
+  color: #f51000;
+  transform: scale(1.05);
+}
+
+/* Username Display */
+.username-display {
+  font-size: 18px;
+  font-weight: bold;
+  color: #5A5A5A;
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* Actions Section */
+.dashboard-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+  width: 100%;
+}
+
+/* Welcome Message */
+.welcome-message {
+  font-size: 24px;
+  font-weight: bold;
+  color: #5A5A5A;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Action Buttons */
+.action-button {
+  background-color: #99BC85;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  padding: 15px 30px;
+  margin: 10px;
+  border-radius: 8px;
+  width: 200px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+.action-button:hover {
+  background-color: #7FAF66;
+  transform: scale(1.05);
+}
+
+/* Timer Button */
+.timer-button {
+  background-color: #99BC85;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  padding: 15px 30px;
+  margin: 10px;
+  border-radius: 8px;
+  width: 200px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer-button:hover {
+  background-color: #7FAF66;
+  transform: scale(1.05);
+}

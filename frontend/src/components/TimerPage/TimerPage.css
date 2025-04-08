@@ -1,0 +1,76 @@
+/* Timer Page Container */
+.timer-page-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #FDFAF6;
+  text-align: center;
+  color: #5A5A5A;
+}
+
+/* Timer Page Header */
+.timer-header {
+  width: 95%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #FAF1E6;
+  padding: 15px 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Clickable Logo */
+.logo-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.logo-image {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.app-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #5A5A5A;
+  margin: 0;
+}
+.timer-heading {
+  color: #5A5A5A;
+}
+
+/* Timer Options */
+.timer-options {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 40px;
+}
+
+/* Timer and Back Buttons */
+.timer-button, .back-button {
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  background: #99BC85;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.timer-button:hover, .back-button:hover {
+  background: #7FAF66;
+  transform: scale(1.05);
+}
