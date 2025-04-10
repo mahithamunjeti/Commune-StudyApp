@@ -20,7 +20,7 @@ const io = socketIo(server, {
 app.use(cors());
 app.use(express.json());
 
-// Token verification middleware (only for protected routes)
+// Token verification middleware
 const verifyToken = (req, res, next) => {
   const token = req.headers["authorization"]?.split(" ")[1]; // Bearer <token>
   if (!token) {
@@ -40,29 +40,33 @@ const verifyToken = (req, res, next) => {
 MongoClient.connect(process.env.DB_URL)
   .then((client) => {
     const studyDBobj = client.db("studyappdb");
-    app.set("db", studyDBobj); // ✅ Add this line to fix the db.collection issue
+
+    app.set("db", studyDBobj); // Set db reference
 
     const usersCollection = studyDBobj.collection("users");
     const roomsCollection = studyDBobj.collection("rooms");
     const tasksCollection = studyDBobj.collection("tasks");
     const goalsCollection = studyDBobj.collection("goals");
+    const emailVerificationCollection = studyDBobj.collection("emailVerification");
 
     app.set("tasksCollection", tasksCollection);
     app.set("goalsCollection", goalsCollection);
     app.set("usersCollection", usersCollection);
     app.set("roomsCollection", roomsCollection);
+    app.set("emailVerificationCollection", emailVerificationCollection);
 
     console.log("✅ DB connection success");
 
-    // Routes that don't need token
+    // Routes that don't require token
     const userApp = require("./APIs/user-api");
     const adminApp = require("./APIs/admin-api");
-    const roomApi = require('./APIs/room-api');
+    const roomApi = require("./APIs/room-api");
+    const executeAPI = require("./APIs/execute-api");
+
     app.use("/room", roomApi);
-
-
     app.use("/user-api", userApp);
     app.use("/admin-api", adminApp);
+    app.use("/execute", executeAPI); // 💡 Added support for running code
 
     // Protected routes
     const taskGoalRoutes = require("./APIs/task-goal-api");
@@ -80,6 +84,35 @@ MongoClient.connect(process.env.DB_URL)
     app.use((err, req, res, next) => {
       res.status(500).send({ status: "error", message: err.message });
     });
+
+    // Socket setup
+    io.on("connection", (socket) => {
+      // Join a room
+      socket.on("join-room", (roomId) => {
+        socket.join(roomId);
+      });
+    
+      // Handle live code updates
+      socket.on("code-change", ({ roomId, code }) => {
+        socket.to(roomId).emit("code-update", code);
+      });
+    
+      // Handle live language updates
+      socket.on("language-change", ({ roomId, language }) => {
+        socket.to(roomId).emit("language-update", language);
+      });
+    
+      // Optional: Handle leaving a room
+      socket.on("leaveRoom", (roomId) => {
+        socket.leave(roomId);
+      });
+    
+      // Existing chat messages
+      socket.on("sendMessage", (msg) => {
+        io.to(msg.roomId).emit("receiveMessage", msg);
+      });
+    });
+    
 
     // Start server
     const port = process.env.PORT || 4000;

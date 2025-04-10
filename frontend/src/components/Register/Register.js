@@ -1,7 +1,7 @@
 // src/components/Register.js
 import React, { useState } from "react";
 import { registerUser } from "../../api";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import "./Register.css"; // Import CSS file
 
 const Register = () => {
@@ -9,18 +9,29 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState("");
+
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setError("");
+    setSuccessMessage("");
+  
     try {
-      await registerUser({ username, email, password, userType: "user" });
-      alert("Registration Successful! Please Login.");
-      navigate("/login"); // Redirect to login page
+      const response = await registerUser({ username, email, password, userType: "user" });
+      
+      const message = response?.data?.message;
+      
+      if (message === "Username already taken" || message === "Email already registered") {
+        setError(message);
+      } else {
+        setSuccessMessage("✅ Registration initiated. Please check your email and verify your account.");
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
     }
   };
+  
 
   return (
     <div className="register-container">
@@ -29,6 +40,8 @@ const Register = () => {
         <p className="register-subtitle">Create an account to get started</p>
 
         {error && <p className="error-message">{error}</p>}
+        {successMessage && <p className="success-message">{successMessage}</p>}
+
 
         <form className="register-form" onSubmit={handleRegister}>
           <div>

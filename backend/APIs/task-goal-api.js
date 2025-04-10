@@ -174,31 +174,67 @@ taskGoalApi.put("/task/:id/star", verifyToken, async (req, res) => {
 });
 
 
-taskGoalApi.put("/goal/:id/star", verifyToken, async (req, res) => {
+taskGoalApi.put("/goal/:id/tick", verifyToken, async (req, res) => {
   try {
     const goalId = req.params.id;
+    const { markComplete } = req.body; // This should be true or false from frontend
+    const today = new Date().toISOString().split("T")[0];
+
     const goal = await req.goalsCollection.findOne({
       _id: new ObjectId(goalId),
       userId: new ObjectId(req.user._id),
     });
 
     if (!goal) {
-      return res.status(404).json({ error: "Goal not found" });
+      return res.status(404).send({ message: "Goal not found" });
     }
 
-    const newStarred = !goal.starred;
+    let update = {};
+    let newStreak = goal.streak || 0;
+
+    if (markComplete) {
+      // If the goal is not already marked for today
+      if (goal.lastCompletedDate !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const wasYesterday = new Date(goal.lastCompletedDate).toISOString().split("T")[0] === yesterday.toISOString().split("T")[0];
+
+        newStreak = wasYesterday ? newStreak + 1 : 1;
+
+        update = {
+          lastCompletedDate: today,
+          completedToday: true,
+          streak: newStreak,
+        };
+      } else {
+        return res.send({ message: "Already marked complete today" });
+      }
+    } else {
+      // UN-TICKING: If already marked complete today, allow undo
+      if (goal.completedToday && goal.lastCompletedDate === today) {
+        newStreak = Math.max(0, newStreak - 1);
+
+        update = {
+          completedToday: false,
+          streak: newStreak,
+          lastCompletedDate: null, // Optional: depends on whether you want to keep it or nullify
+        };
+      } else {
+        return res.send({ message: "Nothing to untick today" });
+      }
+    }
 
     await req.goalsCollection.updateOne(
       { _id: new ObjectId(goalId) },
-      { $set: { starred: newStarred } }
+      { $set: update }
     );
 
-    res.json({ message: "Goal star toggled", starred: newStarred });
+    res.send({ message: "Goal updated", update });
   } catch (err) {
-    console.error("Star Goal Error:", err);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).send({ message: "Error updating goal", error: err.message });
   }
 });
+
 
 taskGoalApi.delete("/goal/:id", verifyToken, async (req, res) => {
   try {

@@ -13,17 +13,24 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await loginUser({ username, password, userType: "user" });
-      
-      // Save token AND username
+  
+      if (response.data.message !== "login success") {
+        setError(response.data.message); // show message from backend
+        return;
+      }
+  
+      // Save token and username
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("username", response.data.username); // <-- ADD THIS
+      localStorage.setItem("username", JSON.stringify(username));
   
       alert("Login Successful!");
       navigate(`/dashboard/${username}`);
     } catch (err) {
-      setError(err.response?.data?.message || "Invalid username or password.");
+      console.error(err);
+      setError("Something went wrong. Please try again.");
     }
   };
+  
   
 
   return (

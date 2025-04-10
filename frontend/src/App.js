@@ -12,6 +12,8 @@ import PomodoroTimer from "./components/TimerPage/PomodoroTimer";
 import SetMyGoals from "./components/SetMyGoals/SetMyGoals";
 import CollabRooms from "./components/CollabRooms/CollabRooms";
 import RoomPage from "./components/CollabRooms/RoomPage"; 
+import PlaygroundPage from "./components/CollabRooms/PlaygroundPage";
+
 
 
 
@@ -39,6 +41,8 @@ function App() {
         <Route path="/timer/pomodoro/:username" element={<PrivateRoute><PomodoroTimer /></PrivateRoute>} />
         <Route path="/collab-rooms/:username" element={<PrivateRoute><CollabRooms /></PrivateRoute>} />
         <Route path="/room/:roomId/:username" element={<PrivateRoute><RoomPage /></PrivateRoute>} /> 
+        <Route path="/room/:roomId/playground" element={<PrivateRoute><PlaygroundPage /></PrivateRoute>} />
+
 
       </Routes>
     </Router>

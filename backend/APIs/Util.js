@@ -1,75 +1,77 @@
+const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+const { sendVerificationEmail } = require('./emailVerification'); // ✅ Added line
 
-const bcryptjs=require('bcryptjs')
-const jwt=require('jsonwebtoken')
-require('dotenv').config()
-//req handler for user/auhtor registration
+//req handler for user/author registration
 const createUserOrAuthor = async (req, res) => {
-  //get users and authors collecion object
   const usersCollectionObj = req.app.get("usersCollection");
- 
-  //get user or autrhor
+  const emailVerificationCollection = req.app.get("emailVerificationCollection");
+
   const user = req.body;
 
-  //check duplicate user
   if (user.userType === "user") {
-    //find user by usersname
-    let dbuser = await usersCollectionObj.findOne({ username: user.username });
-    //if user existed
-    if (dbuser !== null) {
-     return res.send({ message: "User already existed" });
+    // 🔍 Check for existing username
+    let existingUserByUsername = await usersCollectionObj.findOne({ username: user.username });
+    if (existingUserByUsername !== null) {
+      return res.send({ message: "Username already taken" });
+    }
+
+    // 🔍 Check for existing email
+    let existingUserByEmail = await usersCollectionObj.findOne({ email: user.email });
+    if (existingUserByEmail !== null) {
+      return res.send({ message: "Email already registered" });
     }
   }
-  
 
-  //hash password
-    const hashedPassword=await bcryptjs.hash(user.password,7)
-    //replace plain pw with hashed pw
-    user.password=hashedPassword;
+  // ✅ Continue with registration if both username & email are unique
+  const hashedPassword = await bcryptjs.hash(user.password, 7);
+  user.password = hashedPassword;
+  user.isVerified = false;
 
-    //save user
-    if(user.userType==='user'){
-        await usersCollectionObj.insertOne(user)
-        res.send({message:"User created"})
-    }
-
+  if (user.userType === 'user') {
+    await usersCollectionObj.insertOne(user);
+    await sendVerificationEmail(user.email, usersCollectionObj, emailVerificationCollection);
+    res.send({ message: "User created. Verification email sent." });
+  }
 };
 
-const userOrAuthorLogin = async(req, res) => {
-     //get users and authors collecion object
+
+const userOrAuthorLogin = async (req, res) => {
   const usersCollectionObj = req.app.get("usersCollection");
-  //get user or autrhor
   const userCred = req.body;
-  //verifuy username of user
-  if(userCred.userType==='user'){
-    let dbuser=await usersCollectionObj.findOne({username:userCred.username})
-    if(dbuser===null){
-        return res.send({message:"Invalid username"})
-    }else{
-        let status=await bcryptjs.compare(userCred.password,dbuser.password)
-       // console.log("status",status)
-        if(status===false){
-            return res.send({message:"Invalid password"})
-        }
-        else{
-            //create token
-            const signedToken = jwt.sign(
-              { username: dbuser.username, _id: dbuser._id },  // include _id!
-              process.env.SECRET_KEY,
-              { expiresIn: "1h" }
-            );            
-            delete dbuser.password;
-            res.send({ 
-              message: "login success", 
-              token: signedToken, 
-              username: dbuser.username // Ensure the username is sent separately
-          });
-        }
+
+  if (userCred.userType === 'user') {
+    let dbuser = await usersCollectionObj.findOne({ username: userCred.username });
+
+    if (!dbuser) {
+      return res.status(401).send({ message: "Invalid username" });
     }
+
+    const isPasswordValid = await bcryptjs.compare(userCred.password, dbuser.password);
+    if (!isPasswordValid) {
+      return res.status(401).send({ message: "Invalid password" });
+    }
+
+    if (!dbuser.isVerified) {
+      return res.status(403).send({ message: "Please verify your email before logging in" });
+    }
+
+    const signedToken = jwt.sign(
+      { username: dbuser.username, _id: dbuser._id },
+      process.env.SECRET_KEY,
+      { expiresIn: "1h" }
+    );
+
+    delete dbuser.password;
+
+    return res.send({
+      message: "login success",
+      token: signedToken,
+      username: dbuser.username
+    });
   }
-
-  //if username and password are valid
-
-
 };
 
-module.exports = {createUserOrAuthor,userOrAuthorLogin};
+
+module.exports = { createUserOrAuthor, userOrAuthorLogin };

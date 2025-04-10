@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import "./SetMyGoals.css";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-
+import logo from '../commune-logo.png'; // Update the path and filename to match your actual image
 
 const SetMyGoals = () => {
   const navigate = useNavigate();
@@ -47,28 +47,36 @@ const SetMyGoals = () => {
   const handleAdd = async () => {
     const input = activeTab === "tasks" ? taskInput : goalInput;
     if (!input.trim()) return;
-
+  
     const newItem = {
       title: input.trim(),
       dueDate,
       description,
     };
-
+  
     try {
       const url = activeTab === "tasks" 
         ? "http://localhost:4000/task-goal-api/task"
         : "http://localhost:4000/task-goal-api/goal";
         
-      const res = await axios.post(url, newItem, { headers: authHeader });
-
+      await axios.post(url, newItem, { headers: authHeader });
+  
+      // Fetch updated list immediately after adding
+      const fetchUrl = activeTab === "tasks"
+        ? "http://localhost:4000/task-goal-api/tasks"
+        : "http://localhost:4000/task-goal-api/goals";
+  
+      const res = await axios.get(fetchUrl, { headers: authHeader });
+      const updatedData = res.data.payload.filter(Boolean);
+  
       if (activeTab === "tasks") {
-        setTasks([...tasks, res.data.task]);
+        setTasks(updatedData);
         setTaskInput("");
       } else {
-        setGoals([...goals, res.data.goal]);
+        setGoals(updatedData);
         setGoalInput("");
       }
-
+  
       setDueDate("");
       setDescription("");
       setShowForm(false);
@@ -76,29 +84,45 @@ const SetMyGoals = () => {
       console.error("Add error:", error.response?.status, error.response?.data || error.message);
     }
   };
-
+  
   const toggleComplete = async (id) => {
+    const isTask = activeTab === "tasks";
+    const list = isTask ? tasks : goals;
+    const item = list.find((i) => i._id === id);
+    if (!item) return;
+  
+    const isCurrentlyCompleted = item.completed || item.completedToday || false;
+  
     try {
-      const url = activeTab === "tasks"
+      const url = isTask
         ? `http://localhost:4000/task-goal-api/task/${id}/complete`
         : `http://localhost:4000/task-goal-api/goal/${id}/tick`;
-
-      await axios.put(url, {}, { headers: authHeader });
-
-      if (activeTab === "tasks") {
-        setTasks(tasks.map((item) =>
-          item && item._id === id ? { ...item, completed: !item.completed } : item
+  
+      const payload = isTask ? { completed: !isCurrentlyCompleted } : { markComplete: !isCurrentlyCompleted };
+  
+      await axios.put(url, payload, { headers: authHeader });
+  
+      if (isTask) {
+        setTasks(tasks.map((t) =>
+          t._id === id ? { ...t, completed: !isCurrentlyCompleted } : t
         ));
       } else {
-        setGoals(goals.map((item) =>
-          item && item._id === id ? { ...item, completed: !item.completed } : item
+        setGoals(goals.map((g) =>
+          g._id === id
+            ? {
+                ...g,
+                completedToday: !isCurrentlyCompleted,
+                streak: g.streak + (!isCurrentlyCompleted ? 1 : -1),
+              }
+            : g
         ));
       }
     } catch (error) {
-      console.error("Toggle error:", error);
+      console.error("Toggle complete error:", error);
     }
   };
-
+  
+  
   const toggleStarred = async (id) => {
     try {
       const url = activeTab === "tasks"
@@ -155,135 +179,147 @@ const SetMyGoals = () => {
 
   return (
     <div>
-    <header className="timer-header">
-  <div className="logo-container" onClick={() => navigate(`/dashboard/${username}`)}>
-    <img src="logo.png" alt="App Logo" className="logo-image" />
-    <h1 className="app-title">StudyApp</h1>
-  </div>
-</header>
-    <div className="set-my-goals-container">
-      <div className="sidebar">
-        <button
-          onClick={() => {
-            setActiveTab("tasks");
-            setFilter("all");
-          }}
-          className={activeTab === "tasks" ? "active" : ""}
-        >
-          Tasks
-        </button>
-        <button
-          onClick={() => {
-            setActiveTab("goals");
-            setFilter("all");
-          }}
-          className={activeTab === "goals" ? "active" : ""}
-        >
-          Goals
-        </button>
-      </div>
+      <header className="timer-header">
+        <div className="logo-container" onClick={() => navigate(`/dashboard/${username}`)}>
+          <img src={logo} alt="Commune Logo" className="logo-image" />
+          <h1 className="app-title">commune</h1>
+        </div>
+      </header>
+      
+      <div className="set-my-goals-container">
+        <div className="goals-background">
+          <div className="goals-blob goals-blob-1"></div>
+          <div className="goals-blob goals-blob-2"></div>
+        </div>
+        
+        <div className="sidebar">
+          <button
+            onClick={() => {
+              setActiveTab("tasks");
+              setFilter("all");
+            }}
+            className={activeTab === "tasks" ? "active" : ""}
+          >
+            Tasks
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab("goals");
+              setFilter("all");
+            }}
+            className={activeTab === "goals" ? "active" : ""}
+          >
+            Goals
+          </button>
+        </div>
 
-      <div className="content-area">
-        <div className="content-header">
-          <h2>{activeTab === "tasks" ? "My Tasks" : "My Goals"}</h2>
-          <div className="subtabs">
-            <button
-              onClick={() => setFilter("all")}
-              className={filter === "all" ? "subtab-active" : ""}
-            >
-              All
-            </button>
-            <button
-              onClick={() => setFilter("starred")}
-              className={filter === "starred" ? "subtab-active" : ""}
-            >
-              Starred
-            </button>
-            {activeTab === "tasks" && (
+        <div className="content-area">
+          <div className="content-header">
+            <h2>{activeTab === "tasks" ? "My Tasks" : "My Goals"}</h2>
+            <div className="subtabs">
               <button
-                onClick={() => setFilter("completed")}
-                className={filter === "completed" ? "subtab-active" : ""}
+                onClick={() => setFilter("all")}
+                className={filter === "all" ? "subtab-active" : ""}
               >
-                Completed
+                All
               </button>
-            )}
-          </div>
-        </div>
-
-        <div className="input-section">
-          {!showForm ? (
-            <button onClick={() => setShowForm(true)}>
-              + Add {activeTab.slice(0, -1)}
-            </button>
-          ) : (
-            <div className="form-container">
-              <input
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                placeholder={`Enter ${activeTab.slice(0, -1)} name`}
-              />
               {activeTab === "tasks" && (
-                <input
-                  type="date"
-                  value={dueDate}
-                  onChange={(e) => setDueDate(e.target.value)}
-                />
-              )}
-              <input
-                type="text"
-                placeholder="Optional Description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-              <div className="form-buttons">
-                <button onClick={handleAdd}>Save</button>
-                <button className="cancel-btn" onClick={() => setShowForm(false)}>
-                  Cancel
+  <button
+    onClick={() => setFilter("starred")}
+    className={filter === "starred" ? "subtab-active" : ""}
+  >
+    Starred
+  </button>
+)}
+
+              {activeTab === "tasks" && (
+                <button
+                  onClick={() => setFilter("completed")}
+                  className={filter === "completed" ? "subtab-active" : ""}
+                >
+                  Completed
                 </button>
-              </div>
+              )}
             </div>
-          )}
-        </div>
+          </div>
 
-        <ul className="task-list">
-          {filteredList.map((item) => (
-            <li key={item?._id} className="task-item">
-              <div className="left-content">
+          <div className="input-section">
+            {!showForm ? (
+              <button onClick={() => setShowForm(true)}>
+                Add {activeTab === "tasks" ? "Task" : "Goal"}
+              </button>
+            ) : (
+              <div className="form-container">
                 <input
-                  type="checkbox"
-                  checked={item?.completedToday || item?.completed || false}
-                  onChange={() => toggleComplete(item._id)}
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder={`Enter ${activeTab === "tasks" ? "task" : "goal"} name`}
                 />
-                <div>
-                  <span className={item?.completedToday || item?.completed ? "completed" : ""}>
-                    {item?.title}
-                  </span>
-
-                  {activeTab === "tasks" && item?.dueDate && (
-                    <p className="meta">Due: {item.dueDate}</p>
-                  )}
-
-                  {item?.description && (
-                    <p className="meta">{item.description}</p>
-                  )}
-
-                  {activeTab === "goals" && item?.streak >= 0 && (
-                    <p className="meta">🔥{item.streak}</p>
-                  )}
+                {activeTab === "tasks" && (
+                  <input
+                    type="date"
+                    value={dueDate}
+                    onChange={(e) => setDueDate(e.target.value)}
+                  />
+                )}
+                <input
+                  type="text"
+                  placeholder="Optional Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+                <div className="form-buttons">
+                  <button onClick={handleAdd}>Save</button>
+                  <button className="cancel-btn" onClick={() => setShowForm(false)}>
+                    Cancel
+                  </button>
                 </div>
               </div>
+            )}
+          </div>
 
-              <div className="actions">
-                <button onClick={() => toggleStarred(item._id)}>
-                  {item?.starred ? "⭐" : "☆"}
-                </button>
-                <button onClick={() => handleDelete(item._id)}>🗑️</button>
-              </div>
-            </li>
-          ))}
-        </ul>
+          <ul className="task-list">
+            {filteredList.map((item) => (
+              <li key={item?._id} className="task-item">
+                <div className="left-content">
+                  <input
+                    type="checkbox"
+                    checked={item?.completedToday || item?.completed || false}
+                    onChange={() => toggleComplete(item._id)}
+                  />
+                  <div>
+                    <span className={item?.completedToday || item?.completed ? "completed" : ""}>
+                      {item?.title}
+                    </span>
+
+                    {activeTab === "tasks" && item?.dueDate && (
+                      <p className="meta">Due: {item.dueDate}</p>
+                    )}
+
+                    {item?.description && (
+                      <p className="meta">{item.description}</p>
+                    )}
+
+                    {activeTab === "goals" && item?.streak >= 0 && (
+                      <p className="meta">🔥 {item.streak} day streak</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="actions">
+                {activeTab === "tasks" && (
+                  <button onClick={() => toggleStarred(item._id)}>
+                    {item?.starred ? "⭐" : "☆"}
+                  </button>
+                )}
+
+                  <button onClick={() => handleDelete(item._id)}>🗑</button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </div>
     </div>
   );
 };

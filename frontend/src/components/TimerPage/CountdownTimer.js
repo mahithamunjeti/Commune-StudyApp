@@ -57,8 +57,8 @@ const CountdownTimer = () => {
       <div className="clock">
         <div className="clock-face">
           <div className="hand hour-hand" style={{ transform: `rotate(${hourDeg}deg)` }}></div>
-          <div className="hand minute-hand" style={{ transform: `rotate(${minuteDeg}deg)` }}></div>
-          <div className="hand second-hand" style={{ transform: `rotate(${secondDeg}deg)` }}></div>
+          <div className="hand minute-hand" style={{ transform:`rotate(${minuteDeg}deg)` }}></div>
+          <div className="hand second-hand" style={{ transform:`rotate(${secondDeg}deg)` }}></div>
         </div>
       </div>
 

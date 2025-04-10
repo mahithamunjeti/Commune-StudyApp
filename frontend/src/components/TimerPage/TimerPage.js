@@ -9,20 +9,48 @@ const TimerPage = () => {
 
   return (
     <div className="timer-page-container">
+      {/* Animated Background */}
+      <div className="timer-animated-background">
+        <div className="timer-blob timer-blob-1"></div>
+        <div className="timer-blob timer-blob-2"></div>
+      </div>
+      
       {/* Header with Clickable Logo */}
       <header className="timer-header">
         <div className="logo-container" onClick={() => navigate(`/dashboard/${username}`)}>
-          <img src="logo.png" alt="App Logo" className="logo-image" />
-          <h1 className="app-title">StudyApp</h1>
+          <div className="logo-circle"></div>
+          <h1 className="app-title">commune</h1>
         </div>
       </header>
 
-      <h1 class="timer-heading">Choose a Timer Mode</h1>
-      <div className="timer-options">
-        <button className="timer-button" onClick={() => navigate(`/timer/countdown/${username}`)}>⏳ Countdown Timer</button>
-        <button className="timer-button" onClick={() => navigate(`/timer/stopwatch/${username}`)}>⏱ Stopwatch</button>
-        <button className="timer-button" onClick={() => navigate(`/timer/pomodoro/${username}`)}>🍅 Pomodoro Timer</button>
-        {/* <button className="back-button" onClick={() => navigate("/dashboard")}>⬅ Back to Dashboard</button> */}
+      <div className="timer-content">
+        <h1 className="timer-heading">Choose a Clock Mode</h1>
+        
+        <div className="timer-options">
+          <button 
+            className="timer-button" 
+            onClick={() => navigate(`/timer/countdown/${username}`)}
+          >
+            <span className="timer-icon">⏳</span>
+            Countdown Timer
+          </button>
+          
+          <button 
+            className="timer-button" 
+            onClick={() => navigate(`/timer/stopwatch/${username}`)}
+          >
+            <span className="timer-icon">⏱</span>
+            Stopwatch
+          </button>
+          
+          <button 
+            className="timer-button" 
+            onClick={() => navigate(`/timer/pomodoro/${username}`)}
+          >
+            <span className="timer-icon">🍅</span>
+            Pomodoro Timer
+          </button>
+        </div>
       </div>
     </div>
   );
