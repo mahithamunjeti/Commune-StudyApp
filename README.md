@@ -25,7 +25,7 @@ The **Study Motivation Web App** is a full-stack platform built to help students
 ## ✨ Demo
 
 ### 🔹 HomePage Overview  
-<img src="static/1.png" width="300"/>
+<img src="static/1.png" width="550"/>
 
 ---
 
