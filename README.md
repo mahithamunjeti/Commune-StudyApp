@@ -25,39 +25,39 @@ The **Study Motivation Web App** is a full-stack platform built to help students
 ## ✨ Demo
 
 ### 🔹 HomePage Overview  
-<img src="static/1.png" width="550"/>
+<img src="static/1.png" width="700"/>
 
 ---
 
 ### 🔹 Login and Registration   
-<img src="static/2.png" width="250"/>
-<img src="static/3.png" width="250"/>
+<img src="static/2.png" width="700"/>
+<img src="static/3.png" width="700"/>
 
 ---
 
 ### 🔹 Dashboard Overview  
-<img src="static/4.png" width="300"/>
+<img src="static/4.png" width="700"/>
 
 ---
 
 ### 🔹 Collaboration Rooms  
-<img src="static/5.png" width="250"/>
-<img src="static/6.png" width="250"/>
-<img src="static/7.png" width="250"/>
-<img src="static/8.png" width="250"/>
-<img src="static/9.png" width="250"/>
-<img src="static/10.png" width="250"/>
+<img src="static/5.png" width="700"/>
+<img src="static/6.png" width="700"/>
+<img src="static/7.png" width="700"/>
+<img src="static/8.png" width="700"/>
+<img src="static/9.png" width="700"/>
+<img src="static/10.png" width="700"/>
 
 ---
 
 ### 🔹 Personal Goal Setting  
-<img src="static/11.png" width="250"/>
-<img src="static/12.png" width="250"/>
+<img src="static/11.png" width="700"/>
+<img src="static/12.png" width="700"/>
 
 ---
 
 ### 🔹 Timers  
-<img src="static/12.png" width="300"/>
+<img src="static/12.png" width="700"/>
 <p align="center">
   <img src="static/14.png" width="400"/>
   <img src="static/15.png" width="300"/>
