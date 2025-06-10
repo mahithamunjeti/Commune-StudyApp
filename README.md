@@ -59,8 +59,8 @@ The **Study Motivation Web App** is a full-stack platform built to help students
 ### 🔹 Timers  
 ![Collab Room](static/13.png)
 <p align="center">
-  <img src="static/14.png" width="250"/>
-  <img src="static/15.png" width="250"/>
+  <img src="static/14.png" width="400"/>
+  <img src="static/15.png" width="300"/>
   <img src="static/16.png" width="250"/>
 </p>
 
