@@ -6,19 +6,19 @@ The **Study Motivation Web App** is a full-stack platform built to help students
 
 ## 📌 Features
 
-- ✅ Add and manage personal **tasks and goals**
-- ⭐ Mark items as **Starred** for quick access
-- 📅 Maintain **daily goal streaks**
-- 🧑‍🤝‍🧑 **Friend system**: send, accept, or reject requests
-- 🏠 **Collab Rooms** to study with selected friends
-- 💬 Real-time **chat** in study rooms
-- 🧾 Shared **group goals** with progress tracking
-- 🧑‍💻 **Built-in Code Playground** inside Collab Rooms for coding collaboration
-- ⏲️ Multiple **timers**:
-  - 🍅 **Pomodoro Timer**  
-  - ⏱️ **Stopwatch**  
-  - ⏰ **Custom Countdown Timer**
-- 📱 Fully responsive interface
+- Add and manage personal **tasks and goals**
+- Mark items as **Starred** for quick access
+- Maintain **daily goal streaks**
+- **Friend system**: send, accept, or reject requests
+- **Collab Rooms** to study with selected friends
+- Real-time **chat** in study rooms
+- Shared **group goals** with progress tracking
+- **Built-in Code Playground** inside Collab Rooms for coding collaboration
+- Multiple **timers**:
+  - **Pomodoro Timer**  
+  - **Stopwatch**  
+  - **Custom Countdown Timer**
+- Fully responsive interface
 
 ---
 
@@ -118,19 +118,19 @@ http://localhost:3000
 
 ## 🎯 Use Cases
 
-- 🧠 **Daily motivation** with goals and streaks  
-- 👥 **Peer-based study accountability**  
-- 💬 **Collaborative rooms** with task sharing and live chat  
-- 💻 **Code together** via built-in editor  
-- ⏳ **Track time** with different timers for productivity  
-- 🧪 **Focus rooms** for group productivity experiments  
+- **Daily motivation** with goals and streaks  
+- **Peer-based study accountability**  
+- **Collaborative rooms** with task sharing and live chat  
+- **Code together** via built-in editor  
+- **Track time** with different timers for productivity  
+- **Focus rooms** for group productivity experiments  
 
 ---
 
 ## 📌 Future Enhancements
 
-- 📅 Calendar-based goal planner  
-- 📲 Mobile app (React Native / PWA)  
-- 📣 Push notifications for tasks and reminders  
-- 🧠 AI-powered goal suggestions and streak tips  
-- 🎓 Gamification and leaderboard  
+- Calendar-based goal planner  
+- Mobile app (React Native / PWA)  
+- Push notifications for tasks and reminders  
+- AI-powered goal suggestions and streak tips  
+- Gamification and leaderboard  
