@@ -1,0 +1,195 @@
+POST http://localhost:4000/user-api/user
+Content-Type: application/json
+
+{
+  "username": "new",
+  "email": "new@gmail.com",
+  "password": "new",
+  "userType": "user"
+}
+
+
+
+### REGISTER NEW USER
+POST http://localhost:4000/user-api/user
+Content-Type: application/json
+
+{
+  "username": "misha",
+  "email": "misha@example.com",
+  "password": "mypassword123",
+  "userType": "user"
+}
+
+###
+
+### LOGIN TO GET TOKEN
+### LOGIN TO GET TOKEN
+POST http://localhost:4000/user-api/login
+Content-Type: application/json
+
+{
+ "username": "user",
+  "password": "user",
+  "userType": "user"
+}
+
+###
+POST http://localhost:4000/user-api/login
+Content-Type: application/json
+
+{
+  "username": "new",
+  "password": "new",
+  "userType": "user"
+}
+
+### ADD NEW TASK (protected route)add
+POST http://localhost:4000/task-goal-api/task
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1haGl0aGEiLCJfaWQiOiI2N2VmNjk5Y2QwNmVkZjZiZjU4YWU0Y2UiLCJpYXQiOjE3NDQwODgzNzMsImV4cCI6MTc0NDA5MTk3M30.2g5nYjGVfnWoEFT9w_qGwswD9jXfIt0nCyV2Cv5gr6I
+Content-Type: application/json
+
+{
+  "title": "study",
+  "completed": false,
+  "dueDate": "2025-04-10",
+  "userId": "67f166051fbd9db199fa25db"
+}
+
+### GET ALL TASKS FOR USER
+GET http://localhost:4000/task-goal-api/tasks
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyIsIl9pZCI6IjY3ZjRhYzM1NDU2M2VlZjg0MmE2NTA1YyIsImlhdCI6MTc0NDA5Mjk5NSwiZXhwIjoxNzQ0MTc5Mzk1fQ.FqUCtTIKtdi42UWIFgrIzP93RzI9kqOP22Ch2ItTNaE
+
+### MARK TASK AS COMPLETE
+PUT http://localhost:4000/task-goal-api/task/67f2a2b92b5995a9955e4841/complete
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyIsIl9pZCI6IjY3ZjRhYzM1NDU2M2VlZjg0MmE2NTA1YyIsImlhdCI6MTc0NDA5Mjk5NSwiZXhwIjoxNzQ0MTc5Mzk1fQ.FqUCtTIKtdi42UWIFgrIzP93RzI9kqOP22Ch2ItTNaE
+
+###
+POST http://localhost:4000/task-goal-api/goal
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyIsIl9pZCI6IjY3ZjRhYzM1NDU2M2VlZjg0MmE2NTA1YyIsImlhdCI6MTc0NDA5Mjk5NSwiZXhwIjoxNzQ0MTc5Mzk1fQ.FqUCtTIKtdi42UWIFgrIzP93RzI9kqOP22Ch2ItTNaE
+Content-Type: application/json
+
+{
+  "title": "Do codechef",
+  "description": "Daily"
+}
+
+###
+GET http://localhost:4000/task-goal-api/goals
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1haGl0aGEiLCJfaWQiOiI2N2VmNjk5Y2QwNmVkZjZiZjU4YWU0Y2UiLCJpYXQiOjE3NDQwODgzNzMsImV4cCI6MTc0NDA5MTk3M30.2g5nYjGVfnWoEFT9w_qGwswD9jXfIt0nCyV2Cv5gr6I
+
+###
+PUT http://localhost:4000/task-goal-api/goal/67f2a8396dfb12b1bcb4b3a8/tick
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1haGl0aGEiLCJfaWQiOiI2N2VmNjk5Y2QwNmVkZjZiZjU4YWU0Y2UiLCJpYXQiOjE3NDQwODgzNzMsImV4cCI6MTc0NDA5MTk3M30.2g5nYjGVfnWoEFT9w_qGwswD9jXfIt0nCyV2Cv5gr6I
+Content-Type: application/json
+
+
+###friends
+### Send a friend request to another user
+POST http://localhost:4000/friends/send-request
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyIsIl9pZCI6IjY3ZjRhYzM1NDU2M2VlZjg0MmE2NTA1YyIsImlhdCI6MTc0NDA5Mjk5NSwiZXhwIjoxNzQ0MTc5Mzk1fQ.FqUCtTIKtdi42UWIFgrIzP93RzI9kqOP22Ch2ItTNaE
+Content-Type: application/json
+
+{
+  "friendEmail": "mahithamunjeti@gmail.com"
+}
+
+###
+GET http://localhost:4000/friends/pending
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyIsIl9pZCI6IjY3ZjRhYzM1NDU2M2VlZjg0MmE2NTA1YyIsImlhdCI6MTc0NDA5Mjk5NSwiZXhwIjoxNzQ0MTc5Mzk1fQ.FqUCtTIKtdi42UWIFgrIzP93RzI9kqOP22Ch2ItTNaE
+
+###
+POST http://localhost:4000/friends/respond
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyIsIl9pZCI6IjY3ZjRhYzM1NDU2M2VlZjg0MmE2NTA1YyIsImlhdCI6MTc0NDA5Mjk5NSwiZXhwIjoxNzQ0MTc5Mzk1fQ.FqUCtTIKtdi42UWIFgrIzP93RzI9kqOP22Ch2ItTNaE
+Content-Type: application/json
+
+{
+  "requestId": "67f4ac354563eef842a6505c",
+  "action": "accept" 
+}
+
+###
+GET http://localhost:4000/friends/list
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyIsIl9pZCI6IjY3ZjRhYzM1NDU2M2VlZjg0MmE2NTA1YyIsImlhdCI6MTc0NDA5Mjk5NSwiZXhwIjoxNzQ0MTc5Mzk1fQ.FqUCtTIKtdi42UWIFgrIzP93RzI9kqOP22Ch2ItTNaE
+
+####
+GET http://localhost:4000/friends/accepted
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyIsIl9pZCI6IjY3ZjRhYzM1NDU2M2VlZjg0MmE2NTA1YyIsImlhdCI6MTc0NDA5Mjk5NSwiZXhwIjoxNzQ0MTc5Mzk1fQ.FqUCtTIKtdi42UWIFgrIzP93RzI9kqOP22Ch2ItTNaE
+
+
+###
+POST http://localhost:4000/room-api/create-room
+Authorization: Bearer eeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyIsIl9pZCI6IjY3ZjRhYzM1NDU2M2VlZjg0MmE2NTA1YyIsImlhdCI6MTc0NDA5Mjk5NSwiZXhwIjoxNzQ0MTc5Mzk1fQ.FqUCtTIKtdi42UWIFgrIzP93RzI9kqOP22Ch2ItTNaE
+Content-Type: application/json
+
+{
+  "roomName": "Study Room 101",
+  "roomDesc": "A place to grind DSA",
+  "selectedFriends": ["67ef699cd06edf6bf58ae4ce"]
+}
+
+###
+PATCH http://localhost:4000/room/mark-complete/<roomId>/<goalId>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJfaWQiOiI2N2Y0Zjg4YmU0Zjg5N2U2NTkzMjE0NjIiLCJpYXQiOjE3NDQxOTI2NDUsImV4cCI6MTc0NDQ1MTg0NX0.Iw3KgGnTM-W0uW79Qxz0RVt_Ey-oqiF30WU5CUPr7EIeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJfaWQiOiI2N2Y0Zjg4YmU0Zjg5N2U2NTkzMjE0NjIiLCJpYXQiOjE3NDQxOTI2NDUsImV4cCI6MTc0NDQ1MTg0NX0.Iw3KgGnTM-W0uW79Qxz0RVt_Ey-oqiF30WU5CUPr7EI
+Content-Type: application/json
+
+{
+  "date": "2025-04-08",
+  "userId": "actualUserIdHere"
+}
+
+
+###
+PATCH http://localhost:4000/room/mark-complete/:roomId/:goalId
+Authorization:	Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJfaWQiOiI2N2Y0Zjg4YmU0Zjg5N2U2NTkzMjE0NjIiLCJpYXQiOjE3NDQxMzA3NzIsImV4cCI6MTc0NDM4OTk3Mn0.yfjV0tsu20YPX40uoQcjfhTLV9ozUA7RVpmIuzoIlX8
+Content-Type:	application/json
+
+{
+  "userId": "67f4f88be4f897e659321462",
+  "date": "2025-04-08T15:05:19.268+00:00"
+}
+
+###
+
+PATCH http://localhost:4000/room/mark-complete/<roomId>/<goalId>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJfaWQiOiI2N2Y0Zjg4YmU0Zjg5N2U2NTkzMjE0NjIiLCJpYXQiOjE3NDQxMzMzODAsImV4cCI6MTc0NDM5MjU4MH0.pWDwobfjOJzcRM54XNDHYmOVkYAaTqhhku2PY3aN9zE
+
+{
+  "date": "2025-04-08",
+  "userId": "67f4f88be4f897e659321462"
+}
+
+
+###room goals
+POST http://localhost:4000/room/add-goal/67f53c2188c38254cbcaaaab
+Content-Type:	application/json
+Authorization:	Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJfaWQiOiI2N2Y0Zjg4YmU0Zjg5N2U2NTkzMjE0NjIiLCJpYXQiOjE3NDQxOTI2NDUsImV4cCI6MTc0NDQ1MTg0NX0.Iw3KgGnTM-W0uW79Qxz0RVt_Ey-oqiF30WU5CUPr7EI
+
+{
+  "title": "Daily Study Hour",
+  "description": "Study 1 hour daily together",
+  "deadline": "2025-04-15T23:59:59.000Z"
+}
+
+###
+PATCH http://localhost:4000/room/complete-goal/67f55aae2ce157dfec14a2fe/67f55be0e938e1dc51caca5c
+Authorization:	Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pc2hhIiwiX2lkIjoiNjdmNGUyNDVjNmNkYzAxMmIyMWQ2YTNmIiwiaWF0IjoxNzQ0MTMzMjU5LCJleHAiOjE3NDQxMzY4NTl9.FUSHX4YKOX51i1ONBN5is-Dp9kDNFXQQSjPMrFGtHgs
+
+###
+GET http://localhost:4000/room/room-goals/67f53c2188c38254cbcaaaab
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJfaWQiOiI2N2Y0Zjg4YmU0Zjg5N2U2NTkzMjE0NjIiLCJpYXQiOjE3NDQyMDEyODUsImV4cCI6MTc0NDQ2MDQ4NX0.nebljQkFDX4iBs7M_BjPVCPxHd190gEns3FeXKdQBd8
+
+###
+POST http://localhost:4000/room/67f55aae2ce157dfec14a2fe/message
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJfaWQiOiI2N2Y0Zjg4YmU0Zjg5N2U2NTkzMjE0NjIiLCJpYXQiOjE3NDQyMTUzMDAsImV4cCI6MTc0NDQ3NDUwMH0.v4-Mnv_Zvhx1ZqVmlaxNVhmRmwH9I8d_2inksp0yHQU
+Content-Type: application/json
+
+{
+  "sender": "67f4f88be4f897e659321462",
+  "text": "Hello everyone!",
+  "timestamp": "2025-04-09T12:00:00Z"
+}
+
+###
+GET http://localhost:4000/room/67f55aae2ce157dfec14a2fe/messages
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJfaWQiOiI2N2Y0Zjg4YmU0Zjg5N2U2NTkzMjE0NjIiLCJpYXQiOjE3NDQyMTUzMDAsImV4cCI6MTc0NDQ3NDUwMH0.v4-Mnv_Zvhx1ZqVmlaxNVhmRmwH9I8d_2inksp0yHQU
