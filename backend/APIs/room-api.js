@@ -134,19 +134,26 @@ roomApi.patch("/complete-goal/:roomId/:goalId", async (req, res) => {
     // Check if user has already completed this goal
     const userHasCompleted = goal.completedBy.some(id => id === userIdStr);
     
-    // Check if all members had completed before this action
-    const wasAllCompleted = room.members.every(memberId =>
-      goal.completedBy.some(id => id === memberId.toString())
-    );
+    console.log(`Goal completion toggle: goalId=${goalId}, userId=${userIdStr}, userHasCompleted=${userHasCompleted}`);
+    console.log(`Current completedBy:`, goal.completedBy);
+    console.log(`Room members:`, room.members.map(m => m.toString()));
     
     if (userHasCompleted) {
       // User wants to undo completion
       goal.completedBy = goal.completedBy.filter(id => id !== userIdStr);
       
+      // Check if all members had completed before this undo
+      const wasAllCompleted = room.members.every(memberId =>
+        goal.completedBy.some(id => id === memberId.toString())
+      );
+      
+      console.log(`Undoing completion. Was all completed before undo: ${wasAllCompleted}`);
+      
       // If all members had completed before this undo, decrease group streak
       if (wasAllCompleted) {
         goal.groupStreak = Math.max(0, goal.groupStreak - 1);
         goal.completed = false;
+        console.log(`Decreased group streak to: ${goal.groupStreak}`);
       }
     } else {
       // User wants to mark as complete
@@ -157,10 +164,14 @@ roomApi.patch("/complete-goal/:roomId/:goalId", async (req, res) => {
         goal.completedBy.some(id => id === memberId.toString())
       );
 
-      // Only increase streak if all members complete and it wasn't already completed by all
-      if (allCompleted && !wasAllCompleted) {
+      console.log(`Marking complete. All members now completed: ${allCompleted}`);
+      console.log(`Updated completedBy:`, goal.completedBy);
+
+      // Increase streak if all members complete
+      if (allCompleted) {
         goal.groupStreak += 1;
         goal.completed = true;
+        console.log(`Increased group streak to: ${goal.groupStreak}`);
       }
     }
 
