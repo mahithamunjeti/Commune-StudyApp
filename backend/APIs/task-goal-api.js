@@ -41,11 +41,27 @@ taskGoalApi.get('/tasks', verifyToken, async (req, res) => {
 taskGoalApi.put("/task/:id/complete", verifyToken, async (req, res) => {
   try {
     const taskId = req.params.id;
+    const { completed } = req.body;
+    
+    const task = await req.tasksCollection.findOne({
+      _id: new ObjectId(taskId),
+      userId: new ObjectId(req.user._id),
+    });
+
+    if (!task) {
+      return res.status(404).send({ message: "Task not found" });
+    }
+
     const result = await req.tasksCollection.updateOne(
       { _id: new ObjectId(taskId), userId: new ObjectId(req.user._id) },
-      { $set: { completed: true } }
+      { $set: { completed: completed } }
     );
-    res.send({ message: "Task marked complete", payload: result });
+    
+    res.send({ 
+      message: completed ? "Task marked complete" : "Task marked incomplete", 
+      payload: result,
+      update: { completed: completed }
+    });
   } catch (err) {
     res.status(500).send({ message: "Error updating task", error: err.message });
   }

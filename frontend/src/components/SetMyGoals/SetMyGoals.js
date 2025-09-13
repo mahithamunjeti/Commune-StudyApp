@@ -90,22 +90,32 @@ const SetMyGoals = () => {
     const list = isTask ? tasks : goals;
     const item = list.find((i) => i._id === id);
     if (!item) return;
-  
+
     const isCurrentlyCompleted = item.completed || item.completedToday || false;
-  
+
     try {
       const url = isTask
         ? `http://localhost:4000/task-goal-api/task/${id}/complete`
         : `http://localhost:4000/task-goal-api/goal/${id}/tick`;
-  
+
       const payload = isTask ? { completed: !isCurrentlyCompleted } : { markComplete: !isCurrentlyCompleted };
-  
+
       const response = await axios.put(url, payload, { headers: authHeader });
-  
+
       if (isTask) {
-        setTasks(tasks.map((t) =>
-          t._id === id ? { ...t, completed: !isCurrentlyCompleted } : t
-        ));
+        const resp = response?.data || {};
+        const upd = resp.update;
+        
+        if (upd && upd.hasOwnProperty('completed')) {
+          setTasks(tasks.map((t) =>
+            t._id === id ? { ...t, completed: upd.completed } : t
+          ));
+        } else {
+          // Fallback to local state update if backend response is unexpected
+          setTasks(tasks.map((t) =>
+            t._id === id ? { ...t, completed: !isCurrentlyCompleted } : t
+          ));
+        }
       } else {
         const resp = response?.data || {};
         const upd = resp.update;
@@ -145,6 +155,17 @@ const SetMyGoals = () => {
       }
     } catch (error) {
       console.error("Toggle complete error:", error);
+      // If there's an error, refetch to ensure UI is in sync
+      try {
+        const url = activeTab === "tasks" 
+          ? "http://localhost:4000/task-goal-api/tasks"
+          : "http://localhost:4000/task-goal-api/goals";
+        const res = await axios.get(url, { headers: authHeader });
+        const data = res.data.payload.filter(Boolean);
+        activeTab === "tasks" ? setTasks(data) : setGoals(data);
+      } catch (refetchError) {
+        console.error("Refetch after error failed:", refetchError);
+      }
     }
   };
   
