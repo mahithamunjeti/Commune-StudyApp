@@ -134,15 +134,19 @@ roomApi.patch("/complete-goal/:roomId/:goalId", async (req, res) => {
     // Check if user has already completed this goal
     const userHasCompleted = goal.completedBy.some(id => id === userIdStr);
     
+    // Check if all members had completed before this action
+    const wasAllCompleted = room.members.every(memberId =>
+      goal.completedBy.some(id => id === memberId.toString())
+    );
+    
     if (userHasCompleted) {
       // User wants to undo completion
       goal.completedBy = goal.completedBy.filter(id => id !== userIdStr);
       
-      // If goal was marked as completed by everyone, undo that
-      if (goal.completed) {
-        goal.completed = false;
-        // Decrease group streak but don't go below 0
+      // If all members had completed before this undo, decrease group streak
+      if (wasAllCompleted) {
         goal.groupStreak = Math.max(0, goal.groupStreak - 1);
+        goal.completed = false;
       }
     } else {
       // User wants to mark as complete
@@ -153,7 +157,8 @@ roomApi.patch("/complete-goal/:roomId/:goalId", async (req, res) => {
         goal.completedBy.some(id => id === memberId.toString())
       );
 
-      if (allCompleted) {
+      // Only increase streak if all members complete and it wasn't already completed by all
+      if (allCompleted && !wasAllCompleted) {
         goal.groupStreak += 1;
         goal.completed = true;
       }
