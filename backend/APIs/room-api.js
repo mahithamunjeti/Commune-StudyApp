@@ -132,48 +132,58 @@ roomApi.patch("/complete-goal/:roomId/:goalId", async (req, res) => {
     const userIdStr = userId.toString();
 
     // Check if user has already completed this goal
-    const userHasCompleted = goal.completedBy.some(id => id === userIdStr);
+    const userHasCompleted = goal.completedBy.some(id => id.toString() === userIdStr);
     
-    console.log(`Goal completion toggle: goalId=${goalId}, userId=${userIdStr}, userHasCompleted=${userHasCompleted}`);
+    console.log(`=== GOAL COMPLETION TOGGLE DEBUG ===`);
+    console.log(`Goal ID: ${goalId}`);
+    console.log(`User ID: ${userIdStr}`);
+    console.log(`User has completed: ${userHasCompleted}`);
     console.log(`Current completedBy:`, goal.completedBy);
     console.log(`Room members:`, room.members.map(m => m.toString()));
+    console.log(`Current group streak: ${goal.groupStreak}`);
     
     if (userHasCompleted) {
       // User wants to undo completion
-      goal.completedBy = goal.completedBy.filter(id => id !== userIdStr);
+      goal.completedBy = goal.completedBy.filter(id => id.toString() !== userIdStr);
       
       // Check if all members had completed before this undo
       const wasAllCompleted = room.members.every(memberId =>
-        goal.completedBy.some(id => id === memberId.toString())
+        goal.completedBy.some(id => id.toString() === memberId.toString())
       );
       
-      console.log(`Undoing completion. Was all completed before undo: ${wasAllCompleted}`);
+      console.log(`UNDO: Was all completed before undo: ${wasAllCompleted}`);
       
       // If all members had completed before this undo, decrease group streak
       if (wasAllCompleted) {
         goal.groupStreak = Math.max(0, goal.groupStreak - 1);
         goal.completed = false;
-        console.log(`Decreased group streak to: ${goal.groupStreak}`);
+        console.log(`UNDO: Decreased group streak to: ${goal.groupStreak}`);
       }
     } else {
       // User wants to mark as complete
-      goal.completedBy.push(userId);
+      goal.completedBy.push(userIdStr);
 
       // Check if all members have now completed
-      const allCompleted = room.members.every(memberId =>
-        goal.completedBy.some(id => id === memberId.toString())
-      );
+      const allCompleted = room.members.every(memberId => {
+        const memberCompleted = goal.completedBy.some(id => id.toString() === memberId.toString());
+        console.log(`Member ${memberId.toString()} completed: ${memberCompleted}`);
+        return memberCompleted;
+      });
 
-      console.log(`Marking complete. All members now completed: ${allCompleted}`);
-      console.log(`Updated completedBy:`, goal.completedBy);
+      console.log(`MARK: All members now completed: ${allCompleted}`);
+      console.log(`Updated completedBy:`, goal.completedBy.map(id => id.toString()));
 
       // Increase streak if all members complete
       if (allCompleted) {
         goal.groupStreak += 1;
         goal.completed = true;
-        console.log(`Increased group streak to: ${goal.groupStreak}`);
+        console.log(`MARK: Increased group streak to: ${goal.groupStreak}`);
+      } else {
+        console.log(`MARK: Not all members completed yet, no streak increase`);
       }
     }
+    
+    console.log(`=== END DEBUG ===`);
 
     const updateQuery = {};
     updateQuery[`goals.${goalIndex}`] = goal;
