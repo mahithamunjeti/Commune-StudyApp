@@ -115,7 +115,7 @@ roomApi.delete("/delete-room/:roomId", async (req, res) => {
 });
 
 
-// Complete a room goal
+// Toggle room goal completion (mark/unmark)
 roomApi.patch("/complete-goal/:roomId/:goalId", async (req, res) => {
   const userId = new ObjectId(req.user._id);
   const { roomId, goalId } = req.params;
@@ -129,20 +129,34 @@ roomApi.patch("/complete-goal/:roomId/:goalId", async (req, res) => {
 
     const goal = room.goals[goalIndex];
     goal.completedBy = goal.completedBy.map(id => id.toString());
+    const userIdStr = userId.toString();
 
-    if (goal.completedBy.some(id => id.toString() === userId.toString())) {
-      return res.status(400).send({ message: "Goal already marked completed by user" });
-    }
+    // Check if user has already completed this goal
+    const userHasCompleted = goal.completedBy.some(id => id === userIdStr);
+    
+    if (userHasCompleted) {
+      // User wants to undo completion
+      goal.completedBy = goal.completedBy.filter(id => id !== userIdStr);
+      
+      // If goal was marked as completed by everyone, undo that
+      if (goal.completed) {
+        goal.completed = false;
+        // Decrease group streak but don't go below 0
+        goal.groupStreak = Math.max(0, goal.groupStreak - 1);
+      }
+    } else {
+      // User wants to mark as complete
+      goal.completedBy.push(userId);
 
-    goal.completedBy.push(userId);
+      // Check if all members have now completed
+      const allCompleted = room.members.every(memberId =>
+        goal.completedBy.some(id => id === memberId.toString())
+      );
 
-    const allCompleted = room.members.every(memberId =>
-      goal.completedBy.some(id => id.toString() === memberId.toString())
-    );
-
-    if (allCompleted) {
-      goal.groupStreak += 1;
-      goal.completed = true;
+      if (allCompleted) {
+        goal.groupStreak += 1;
+        goal.completed = true;
+      }
     }
 
     const updateQuery = {};
@@ -154,13 +168,14 @@ roomApi.patch("/complete-goal/:roomId/:goalId", async (req, res) => {
     );
 
     res.status(200).send({
-      message: "Goal completion updated",
+      message: userHasCompleted ? "Goal completion undone" : "Goal completion updated",
       goal,
+      userCompleted: !userHasCompleted, // New completion state
     });
 
   } catch (err) {
-    console.error("Error completing goal:", err);
-    res.status(500).send({ message: "Error completing goal" });
+    console.error("Error toggling goal completion:", err);
+    res.status(500).send({ message: "Error toggling goal completion" });
   }
 });
 

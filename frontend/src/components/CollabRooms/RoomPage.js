@@ -74,19 +74,38 @@ const RoomPage = () => {
     }
   };
 
-  const handleMarkComplete = async (goalId) => {
+  const handleToggleComplete = async (goalId) => {
     try {
-      await axios.patch(
+      const response = await axios.patch(
         `http://localhost:4000/room/complete-goal/${roomId}/${goalId}`,
         {},
         {
           headers: { Authorization:` Bearer ${token} `},
         }
       );
-      fetchGoals();
+      
+      // Update local state immediately for better UX
+      setGoals(prevGoals => 
+        prevGoals.map(goal => {
+          if (goal._id === goalId) {
+            const updatedGoal = response.data.goal;
+            return {
+              ...goal,
+              completedBy: updatedGoal.completedBy,
+              groupStreak: updatedGoal.groupStreak,
+              completed: updatedGoal.completed
+            };
+          }
+          return goal;
+        })
+      );
+      
+      console.log("✅ Goal completion toggled:", response.data.message);
     } catch (err) {
-      console.error("❌ Failed to mark complete:", err);
-      alert("Error completing goal");
+      console.error("❌ Failed to toggle goal completion:", err);
+      alert("Error toggling goal completion");
+      // Refresh goals on error to ensure UI is in sync
+      fetchGoals();
     }
   };
 
@@ -240,14 +259,12 @@ const RoomPage = () => {
                       )}
                     </div>
                     
-                    {!hasCompleted(goal) && (
-                      <button 
-                        onClick={() => handleMarkComplete(goal._id)}
-                        className="complete-button"
-                      >
-                        Mark Complete
-                      </button>
-                    )}
+                    <button 
+                      onClick={() => handleToggleComplete(goal._id)}
+                      className={`complete-button ${hasCompleted(goal) ? 'undo-button' : 'mark-button'}`}
+                    >
+                      {hasCompleted(goal) ? 'Undo' : 'Mark Complete'}
+                    </button>
                   </div>
                 ))}
               </div>

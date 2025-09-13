@@ -371,6 +371,26 @@ body {
   transform: translateY(-2px);
 }
 
+.complete-button.undo-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.complete-button.undo-button:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
+}
+
+.complete-button.mark-button {
+  background-color: var(--primary);
+  color: white;
+}
+
+.complete-button.mark-button:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
 /* Empty state */
 .empty-state {
   display: flex;
